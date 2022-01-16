@@ -1,0 +1,13 @@
+baseURL = 'https://subutux.github.io'
+languageCode = 'en-us'
+title = 'Subutux blog'
+theme = 'hyde'
+
+[Menus]
+  main = [
+      {Name = "Github", URL = "https://github.com/subutux/"},
+      {Name = "LinkedIn", URL = "https://www.linkedin.com/in/stijn-van-campenhout-5a009733/"}
+  ]
+
+[params]
+  description = "Braindumps."
