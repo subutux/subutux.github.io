@@ -153,4 +153,3 @@ Looking into `/etc/ssl/certs` it only contained one certificate.
 After installing the package `ca-certificates` in OpenWRT, The connection became
 active and and all my mqtt topics where (one-way) synchronized!
 
-:)

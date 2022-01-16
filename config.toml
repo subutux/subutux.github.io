@@ -1,4 +1,4 @@
-baseURL = 'https://subutux.github.io'
+baseURL = 'https://subutux.github.io/'
 languageCode = 'en-us'
 title = 'Subutux blog'
 theme = 'hyde'
