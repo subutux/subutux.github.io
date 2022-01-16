@@ -6,10 +6,10 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Mosquitto Bridge With Ssl &#183; Subutux blog</title>
 <meta name=description content>
-<link type=text/css rel=stylesheet href=https://subutux.github.iocss/print.css media=print>
-<link type=text/css rel=stylesheet href=https://subutux.github.iocss/poole.css>
-<link type=text/css rel=stylesheet href=https://subutux.github.iocss/syntax.css>
-<link type=text/css rel=stylesheet href=https://subutux.github.iocss/hyde.css>
+<link type=text/css rel=stylesheet href=https://subutux.github.io/css/print.css media=print>
+<link type=text/css rel=stylesheet href=https://subutux.github.io/css/poole.css>
+<link type=text/css rel=stylesheet href=https://subutux.github.io/css/syntax.css>
+<link type=text/css rel=stylesheet href=https://subutux.github.io/css/hyde.css>
 <link rel=stylesheet href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
 <link rel=apple-touch-icon-precomposed sizes=144x144 href=/apple-touch-icon-144-precomposed.png>
 <link rel="shortcut icon" href=/favicon.png>
@@ -18,14 +18,14 @@
 <aside class=sidebar>
 <div class="container sidebar-sticky">
 <div class=sidebar-about>
-<a href=https://subutux.github.io><h1>Subutux blog</h1></a>
+<a href=https://subutux.github.io/><h1>Subutux blog</h1></a>
 <p class=lead>
 Braindumps.
 </p>
 </div>
 <nav>
 <ul class=sidebar-nav>
-<li><a href=https://subutux.github.io>Home</a> </li>
+<li><a href=https://subutux.github.io/>Home</a> </li>
 <li><a href=https://github.com/subutux/> Github </a></li><li><a href=https://www.linkedin.com/in/stijn-van-campenhout-5a009733/> LinkedIn </a></li>
 </ul>
 </nav>
@@ -147,7 +147,6 @@ bridge_capath /etc/ssl/certs # This one is important
 <p>Looking into <code>/etc/ssl/certs</code> it only contained one certificate.
 After installing the package <code>ca-certificates</code> in OpenWRT, The connection became
 active and and all my mqtt topics where (one-way) synchronized!</p>
-<p>:)</p>
 </div>
 </main>
 </body>
