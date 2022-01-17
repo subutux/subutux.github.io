@@ -5,6 +5,9 @@
 👐 Loves working with Open Source projects
 🗣 My words are my own
 Need to contact me, or just want to say hi?: hey@subutux.be
-Translated from the flemish saying &amp;ldquo;In hart en nieren&amp;rdquo;, meaning with a lot of passion.</description></item><item><title>Mosquitto Bridge With Ssl</title><link>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</link><pubDate>Sun, 16 Jan 2022 21:34:43 +0100</pubDate><guid>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</guid><description>Recently one of my homeservers went haywire with a constant load of +- 80 in 1/5/15. Unrelated to this, buit it seems there is an issue with my local vaultwarden instance.
+Translated from the flemish saying &amp;ldquo;In hart en nieren&amp;rdquo;, meaning with a lot of passion.</description></item><item><title>Buy network gear</title><link>https://blog.subutux.be/buy/network/</link><pubDate>Sun, 16 Jan 2022 21:34:43 +0100</pubDate><guid>https://blog.subutux.be/buy/network/</guid><description>This page contains affiliate links to different network products I use regularly and quite fond of.
+Using the below links supports me writing this blog.
+MikroTik RB750GR3 My home router running OpenWRT. Quite a beast for its price.
+Amazon NL Amazon US</description></item><item><title>Mosquitto Bridge With Ssl</title><link>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</link><pubDate>Sun, 16 Jan 2022 21:34:43 +0100</pubDate><guid>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</guid><description>Recently one of my homeservers went haywire with a constant load of +- 80 in 1/5/15. Unrelated to this, buit it seems there is an issue with my local vaultwarden instance.
 But this got me thinking. What if my local mqtt server goes down..
 I am running a local mosquitto server on my OpenWRT router (A Mikrotik 750Gr3) to support my growing love for home automation. Normally this should be quite stable, but I had issues with OpenWRT in the past.</description></item></channel></rss>

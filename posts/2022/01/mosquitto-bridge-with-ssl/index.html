@@ -7,7 +7,7 @@
 <meta name=description content="Recently one of my homeservers went haywire with a constant load of +- 80 in 1/5/15. Unrelated to this, buit it seems there is an issue with my local vaultwarden instance.
 But this got me thinking. What if my local mqtt server goes down..
 I am running a local mosquitto server on my OpenWRT router (A Mikrotik 750Gr3) to support my growing love for home automation. Normally this should be quite stable, but I had issues with OpenWRT in the past.">
-<meta name=keywords content>
+<meta name=keywords content=",mqtt,backup,mosquitto,iot">
 <meta name=robots content="noodp">
 <meta name=theme-color content>
 <link rel=canonical href=https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/>
@@ -30,7 +30,7 @@ But this got me thinking. What if my local mqtt server goes down..
 I am running a local mosquitto server on my OpenWRT router (A Mikrotik 750Gr3) to support my growing love for home automation. Normally this should be quite stable, but I had issues with OpenWRT in the past."><meta itemprop=datePublished content="2022-01-16T21:34:43+01:00">
 <meta itemprop=dateModified content="2022-01-16T21:34:43+01:00">
 <meta itemprop=wordCount content="737"><meta itemprop=image content="https://blog.subutux.be/">
-<meta itemprop=keywords content>
+<meta itemprop=keywords content="mqtt,backup,mosquitto,iot,">
 <meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://blog.subutux.be/">
 <meta name=twitter:title content="Mosquitto Bridge With Ssl">
@@ -88,7 +88,7 @@ Unrelated to this, buit it seems there is an issue with my local vaultwarden
 instance.</p>
 <p>But this got me thinking. What if my local mqtt server goes down..</p>
 <p>I am running a local mosquitto server on my OpenWRT router
-(A Mikrotik 750Gr3) to support my growing love for home
+(A <a href=https://blog.subutux.be/buy/network#mikrotik-rb750gr3>Mikrotik 750Gr3</a>) to support my growing love for home
 automation. Normally this should be quite stable, but I had issues with
 OpenWRT in the past. Won&rsquo;t it be nice to have a bridge as backup, so in the
 event that my mqtt server acts up, I can switch to that one, without losing any
@@ -110,58 +110,58 @@ Setting this up with LetsEncrypt and DNS auth is quite easy.</p>
 </ul>
 <p>Where <code>0-security.conf</code> contains the configured security and authentication
 sections, disallowing anonymous access and specifing the password file:</p>
-<pre tabindex=0><code># =================================================================
-# Security
-# =================================================================
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=color:#75715e># =================================================================</span>
+<span style=color:#75715e># Security</span>
+<span style=color:#75715e># =================================================================</span>
 
-# If set, only clients that have a matching prefix on their
-# clientid will be allowed to connect to the broker. By default,
-# all clients may connect.
-# For example, setting &quot;secure-&quot; here would mean a client &quot;secure-
-# client&quot; could connect but another with clientid &quot;mqtt&quot; couldn't.
-#clientid_prefixes
+<span style=color:#75715e># If set, only clients that have a matching prefix on their</span>
+<span style=color:#75715e># clientid will be allowed to connect to the broker. By default,</span>
+<span style=color:#75715e># all clients may connect.</span>
+<span style=color:#75715e># For example, setting &#34;secure-&#34; here would mean a client &#34;secure-</span>
+<span style=color:#75715e># client&#34; could connect but another with clientid &#34;mqtt&#34; couldn&#39;t.</span>
+<span style=color:#75715e>#clientid_prefixes</span>
 
-# Boolean value that determines whether clients that connect
-# without providing a username are allowed to connect. If set to
-# false then a password file should be created (see the
-# password_file option) to control authenticated client access.
-#
-# Defaults to true if no other security options are set. If `password_file` or
-# `psk_file` is set, or if an authentication plugin is loaded which implements
-# username/password or TLS-PSK checks, then `allow_anonymous` defaults to
-# false.
-#
-#allow_anonymous true
-allow_anonymous false
+<span style=color:#75715e># Boolean value that determines whether clients that connect</span>
+<span style=color:#75715e># without providing a username are allowed to connect. If set to</span>
+<span style=color:#75715e># false then a password file should be created (see the</span>
+<span style=color:#75715e># password_file option) to control authenticated client access.</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e># Defaults to true if no other security options are set. If `password_file` or</span>
+<span style=color:#75715e># `psk_file` is set, or if an authentication plugin is loaded which implements</span>
+<span style=color:#75715e># username/password or TLS-PSK checks, then `allow_anonymous` defaults to</span>
+<span style=color:#75715e># false.</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e>#allow_anonymous true</span>
+<span style=color:#a6e22e>allow_anonymous false</span>
 
-# -----------------------------------------------------------------
-# Default authentication and topic access control
-# -----------------------------------------------------------------
+<span style=color:#75715e># -----------------------------------------------------------------</span>
+<span style=color:#75715e># Default authentication and topic access control</span>
+<span style=color:#75715e># -----------------------------------------------------------------</span>
 
-# Control access to the broker using a password file. This file can be
-# generated using the mosquitto_passwd utility. If TLS support is not compiled
-# into mosquitto (it is recommended that TLS support should be included) then
-# plain text passwords are used, in which case the file should be a text file
-# with lines in the format:
-# username:password
-# The password (and colon) may be omitted if desired, although this
-# offers very little in the way of security.
-#
-# See the TLS client require_certificate and use_identity_as_username options
-# for alternative authentication options. If an auth_plugin is used as well as
-# password_file, the auth_plugin check will be made first.
-#password_file
-password_file /etc/mosquitto/passwd
-</code></pre><p><code>10-listener-localhost.conf</code> contains a localhost listener, handy for debugging:</p>
-<pre tabindex=0><code>listener 1883 localhost
-</code></pre><p>and at last <code>20-listener-public-mqtt.server.domain-ssl.conf</code> containting the
+<span style=color:#75715e># Control access to the broker using a password file. This file can be</span>
+<span style=color:#75715e># generated using the mosquitto_passwd utility. If TLS support is not compiled</span>
+<span style=color:#75715e># into mosquitto (it is recommended that TLS support should be included) then</span>
+<span style=color:#75715e># plain text passwords are used, in which case the file should be a text file</span>
+<span style=color:#75715e># with lines in the format:</span>
+<span style=color:#75715e># username:password</span>
+<span style=color:#75715e># The password (and colon) may be omitted if desired, although this</span>
+<span style=color:#75715e># offers very little in the way of security.</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e># See the TLS client require_certificate and use_identity_as_username options</span>
+<span style=color:#75715e># for alternative authentication options. If an auth_plugin is used as well as</span>
+<span style=color:#75715e># password_file, the auth_plugin check will be made first.</span>
+<span style=color:#75715e>#password_file</span>
+<span style=color:#a6e22e>password_file /etc/mosquitto/passwd</span>
+</code></pre></div><p><code>10-listener-localhost.conf</code> contains a localhost listener, handy for debugging:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=color:#a6e22e>listener 1883 localhost</span>
+</code></pre></div><p>and at last <code>20-listener-public-mqtt.server.domain-ssl.conf</code> containting the
 public listener, with ssl configured:</p>
-<pre tabindex=0><code>listener 1883
-protocol mqtt
-certfile /etc/letsencrypt/live/mqtt.server.domain/cert.pem
-cafile /etc/letsencrypt/live/mqtt.server.domain/chain.pem
-keyfile /etc/letsencrypt/live/mqtt.server.domain/privkey.pem
-</code></pre><p>So far, so good.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=color:#a6e22e>listener 1883</span>
+<span style=color:#a6e22e>protocol mqtt</span>
+<span style=color:#a6e22e>certfile /etc/letsencrypt/live/mqtt.server.domain/cert.pem</span>
+<span style=color:#a6e22e>cafile /etc/letsencrypt/live/mqtt.server.domain/chain.pem</span>
+<span style=color:#a6e22e>keyfile /etc/letsencrypt/live/mqtt.server.domain/privkey.pem</span>
+</code></pre></div><p>So far, so good.</p>
 <p>Let&rsquo;s quickly configure the <code>renew_hook</code> for certbot to give mosquitto a kick when the cert is renewed:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>echo <span style=color:#e6db74>&#34;renew_hook = systemctl restart mosquitto&#34;</span> &gt;&gt; /etc/letsencrypt/renewal/mqtt.server.domain.conf
 </code></pre></div><h2 id=bridging>Bridging</h2>
@@ -169,27 +169,27 @@ keyfile /etc/letsencrypt/live/mqtt.server.domain/privkey.pem
 remote one.</p>
 <p>I&rsquo;m using the LuCi configuration page here to setup the bridge which generates
 the following configuration file:</p>
-<pre tabindex=0><code># mosquitto.conf file generated from UCI config.
-log_dest syslog
-port 1883
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=color:#75715e># mosquitto.conf file generated from UCI config.</span>
+<span style=color:#a6e22e>log_dest syslog</span>
+<span style=color:#a6e22e>port 1883</span>
 
-listener 1888
-protocol mqtt
+<span style=color:#a6e22e>listener 1888</span>
+<span style=color:#a6e22e>protocol mqtt</span>
 
 
-# Bridge connection from UCI section
-connection mqtt.subutux.be
-address mqtt.server.domain:1883
-notifications true
-remote_password long-password-here
-remote_username username
-start_type automatic
-topic # out 2
-try_private true
-bridge_capath /etc/ssl/certs # This one is important
-</code></pre><p>First, I didn&rsquo;t know that <strong>mosquitto only initiates an ssl connection if you specify <code>bridge_cafile</code> or <code>bridge_capath</code></strong> <a href=https://mosquitto.org/man/mosquitto-conf-5.html>man page</a>.</p>
+<span style=color:#75715e># Bridge connection from UCI section</span>
+<span style=color:#a6e22e>connection mqtt.subutux.be</span>
+<span style=color:#a6e22e>address mqtt.server.domain:1883</span>
+<span style=color:#a6e22e>notifications true</span>
+<span style=color:#a6e22e>remote_password long-password-here</span>
+<span style=color:#a6e22e>remote_username username</span>
+<span style=color:#a6e22e>start_type automatic</span>
+<span style=color:#a6e22e>topic # out 2</span>
+<span style=color:#a6e22e>try_private true</span>
+<span style=color:#a6e22e>bridge_capath /etc/ssl/certs # This one is important</span>
+</code></pre></div><p>First, I didn&rsquo;t know that <strong>mosquitto only initiates an ssl connection if you specify <code>bridge_cafile</code> or <code>bridge_capath</code></strong> <a href=https://mosquitto.org/man/mosquitto-conf-5.html>man page</a>.</p>
 <p>So i point <code>bridge_capath</code> to my router&rsquo;s global certificate store.</p>
-<p>But, I kept receiving log messages signalling that there is still something wrong. My lets encrypt certificate doesn&rsquo;t seem to be validated. :/</p>
+<p>But, I kept receiving log messages signalling that there is still something wrong. My lets encrypt certificate doesn&rsquo;t seem to be validated. 😕</p>
 <p>Looking into <code>/etc/ssl/certs</code> it only contained one certificate.
 After installing the package <code>ca-certificates</code> in OpenWRT, The connection became
 active and and all my mqtt topics where (one-way) synchronized!</p>
@@ -197,6 +197,12 @@ active and and all my mqtt topics where (one-way) synchronized!</p>
 </article>
 <hr>
 <div class=post-info>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
+<span class=tag><a href=https://blog.subutux.be/tags/mqtt/>mqtt</a></span>
+<span class=tag><a href=https://blog.subutux.be/tags/backup/>backup</a></span>
+<span class=tag><a href=https://blog.subutux.be/tags/mosquitto/>mosquitto</a></span>
+<span class=tag><a href=https://blog.subutux.be/tags/iot/>iot</a></span>
+</p>
 <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
 737 Words
 </p>
