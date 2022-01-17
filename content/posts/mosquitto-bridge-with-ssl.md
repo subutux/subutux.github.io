@@ -2,6 +2,11 @@
 title: "Mosquitto Bridge With Ssl"
 date: 2022-01-16T21:34:43+01:00
 draft: false
+tags:
+ - mqtt
+ - backup
+ - mosquitto
+ - iot
 ---
 
 Recently one of my homeservers went haywire with a constant load of
@@ -12,7 +17,7 @@ instance.
 But this got me thinking. What if my local mqtt server goes down..
 
 I am running a local mosquitto server on my OpenWRT router
-(A Mikrotik 750Gr3) to support my growing love for home
+(A [Mikrotik 750Gr3](/buy/network#mikrotik-rb750gr3)) to support my growing love for home
 automation. Normally this should be quite stable, but I had issues with
 OpenWRT in the past. Won't it be nice to have a bridge as backup, so in the
 event that my mqtt server acts up, I can switch to that one, without losing any
@@ -46,7 +51,7 @@ Then, I created 3 files in that directory:
 Where `0-security.conf` contains the configured security and authentication
 sections, disallowing anonymous access and specifing the password file:
 
-```
+```ini
 # =================================================================
 # Security
 # =================================================================
@@ -92,14 +97,14 @@ password_file /etc/mosquitto/passwd
 ```
 `10-listener-localhost.conf` contains a localhost listener, handy for debugging:
 
-```
+```ini
 listener 1883 localhost
 ```
 
 and at last `20-listener-public-mqtt.server.domain-ssl.conf` containting the
 public listener, with ssl configured:
 
-```
+```ini
 listener 1883
 protocol mqtt
 certfile /etc/letsencrypt/live/mqtt.server.domain/cert.pem
@@ -123,7 +128,7 @@ remote one.
 I'm using the LuCi configuration page here to setup the bridge which generates
 the following configuration file:
 
-```
+```ini
 # mosquitto.conf file generated from UCI config.
 log_dest syslog
 port 1883
@@ -147,7 +152,7 @@ First, I didn't know that **mosquitto only initiates an ssl connection if you sp
 
 So i point `bridge_capath` to my router's global certificate store.
 
-But, I kept receiving log messages signalling that there is still something wrong. My lets encrypt certificate doesn't seem to be validated. :/
+But, I kept receiving log messages signalling that there is still something wrong. My lets encrypt certificate doesn't seem to be validated. 😕
 
 Looking into `/etc/ssl/certs` it only contained one certificate.
 After installing the package `ca-certificates` in OpenWRT, The connection became
