@@ -4,7 +4,6 @@ title = 'Subutux blog'
 theme = 'hello-friend-ng'
 paginate     = 10
 
-
 PygmentsCodeFences = true
 PygmentsStyle = "monokai"
 
