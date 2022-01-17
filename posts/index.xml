@@ -1,3 +1,114 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Subutux blog</title><link>https://subutux.github.io/posts/</link><description>Recent content in Posts on Subutux blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 16 Jan 2022 21:34:43 +0100</lastBuildDate><atom:link href="https://subutux.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Mosquitto Bridge With Ssl</title><link>https://subutux.github.io/posts/mosquitto-bridge-with-ssl/</link><pubDate>Sun, 16 Jan 2022 21:34:43 +0100</pubDate><guid>https://subutux.github.io/posts/mosquitto-bridge-with-ssl/</guid><description>Recently one of my homeservers went haywire with a constant load of +- 80 in 1/5/15. Unrelated to this, buit it seems there is an issue with my local vaultwarden instance.
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Subutux</title><link>https://blog.subutux.be/posts/</link><description>Recent content in Posts on Subutux</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>&lt;a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0&lt;/a></copyright><lastBuildDate>Sun, 16 Jan 2022 21:34:43 +0100</lastBuildDate><atom:link href="https://blog.subutux.be/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Mosquitto Bridge With Ssl</title><link>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</link><pubDate>Sun, 16 Jan 2022 21:34:43 +0100</pubDate><guid>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</guid><description>Recently one of my homeservers went haywire with a constant load of +- 80 in 1/5/15. Unrelated to this, buit it seems there is an issue with my local vaultwarden instance.
 But this got me thinking. What if my local mqtt server goes down..
-I am running a local mosquitto server on my OpenWRT router (A Mikrotik 750Gr3) to support my growing love for home automation. Normally this should be quite stable, but I had issues with OpenWRT in the past.</description></item></channel></rss>
+I am running a local mosquitto server on my OpenWRT router (A Mikrotik 750Gr3) to support my growing love for home automation. Normally this should be quite stable, but I had issues with OpenWRT in the past.</description><content type="html"><![CDATA[<p>Recently one of my homeservers went haywire with a constant load of
++- 80 in 1/5/15.
+Unrelated to this, buit it seems there is an issue with my local vaultwarden
+instance.</p>
+<p>But this got me thinking. What if my local mqtt server goes down..</p>
+<p>I am running a local mosquitto server on my OpenWRT router
+(A Mikrotik 750Gr3) to support my growing love for home
+automation. Normally this should be quite stable, but I had issues with
+OpenWRT in the past. Won&rsquo;t it be nice to have a bridge as backup, so in the
+event that my mqtt server acts up, I can switch to that one, without losing any
+data.</p>
+<h2 id="setting-up-an-mqtt-server">Setting up an MQTT server</h2>
+<p>Using your favourite package manager, you can install mosquitto, an mqtt server.</p>
+<p>Because this server will be running on a separate network, SSL is a must.
+Setting this up with LetsEncrypt and DNS auth is quite easy.</p>
+<h3 id="certificates">Certificates</h3>
+<p>I Already have a dns challenge setup for other domains, so reusing this. Maybe I&rsquo;ll document this in the future.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">certbot certonly --preferred-challenges dns --authenticator dns-hetzner --dns-hetzner-credentials /etc/letsencrypt/hetzner.ini -d mqtt.server.domain
+</code></pre></div><h3 id="configuration">Configuration</h3>
+<p>I like to keep my configurations quite clean. Luckly, Mosquitto supports splitting up the confgiration files by setting the configuration parameter <code>include_dir</code> and point it to a sensable path, like <code>/etc/mosquitto/conf.d/</code>.</p>
+<p>Then, I created 3 files in that directory:</p>
+<ul>
+<li>0-security.conf</li>
+<li>10-listener-localhost.conf</li>
+<li>20-listener-public-mqtt.server.domain-ssl.conf</li>
+</ul>
+<p>Where <code>0-security.conf</code> contains the configured security and authentication
+sections, disallowing anonymous access and specifing the password file:</p>
+<pre tabindex="0"><code># =================================================================
+# Security
+# =================================================================
+
+# If set, only clients that have a matching prefix on their
+# clientid will be allowed to connect to the broker. By default,
+# all clients may connect.
+# For example, setting &quot;secure-&quot; here would mean a client &quot;secure-
+# client&quot; could connect but another with clientid &quot;mqtt&quot; couldn't.
+#clientid_prefixes
+
+# Boolean value that determines whether clients that connect
+# without providing a username are allowed to connect. If set to
+# false then a password file should be created (see the
+# password_file option) to control authenticated client access.
+#
+# Defaults to true if no other security options are set. If `password_file` or
+# `psk_file` is set, or if an authentication plugin is loaded which implements
+# username/password or TLS-PSK checks, then `allow_anonymous` defaults to
+# false.
+#
+#allow_anonymous true
+allow_anonymous false
+
+# -----------------------------------------------------------------
+# Default authentication and topic access control
+# -----------------------------------------------------------------
+
+# Control access to the broker using a password file. This file can be
+# generated using the mosquitto_passwd utility. If TLS support is not compiled
+# into mosquitto (it is recommended that TLS support should be included) then
+# plain text passwords are used, in which case the file should be a text file
+# with lines in the format:
+# username:password
+# The password (and colon) may be omitted if desired, although this
+# offers very little in the way of security.
+#
+# See the TLS client require_certificate and use_identity_as_username options
+# for alternative authentication options. If an auth_plugin is used as well as
+# password_file, the auth_plugin check will be made first.
+#password_file
+password_file /etc/mosquitto/passwd
+</code></pre><p><code>10-listener-localhost.conf</code> contains a localhost listener, handy for debugging:</p>
+<pre tabindex="0"><code>listener 1883 localhost
+</code></pre><p>and at last <code>20-listener-public-mqtt.server.domain-ssl.conf</code> containting the
+public listener, with ssl configured:</p>
+<pre tabindex="0"><code>listener 1883
+protocol mqtt
+certfile /etc/letsencrypt/live/mqtt.server.domain/cert.pem
+cafile /etc/letsencrypt/live/mqtt.server.domain/chain.pem
+keyfile /etc/letsencrypt/live/mqtt.server.domain/privkey.pem
+</code></pre><p>So far, so good.</p>
+<p>Let&rsquo;s quickly configure the <code>renew_hook</code> for certbot to give mosquitto a kick when the cert is renewed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">echo <span style="color:#e6db74">&#34;renew_hook = systemctl restart mosquitto&#34;</span> &gt;&gt; /etc/letsencrypt/renewal/mqtt.server.domain.conf
+</code></pre></div><h2 id="bridging">Bridging</h2>
+<p>Now, we need to configure the local mosquitto on my router to bridge with the
+remote one.</p>
+<p>I&rsquo;m using the LuCi configuration page here to setup the bridge which generates
+the following configuration file:</p>
+<pre tabindex="0"><code># mosquitto.conf file generated from UCI config.
+log_dest syslog
+port 1883
+
+listener 1888
+protocol mqtt
+
+
+# Bridge connection from UCI section
+connection mqtt.subutux.be
+address mqtt.server.domain:1883
+notifications true
+remote_password long-password-here
+remote_username username
+start_type automatic
+topic # out 2
+try_private true
+bridge_capath /etc/ssl/certs # This one is important
+</code></pre><p>First, I didn&rsquo;t know that <strong>mosquitto only initiates an ssl connection if you specify <code>bridge_cafile</code> or <code>bridge_capath</code></strong> <a href="https://mosquitto.org/man/mosquitto-conf-5.html">man page</a>.</p>
+<p>So i point <code>bridge_capath</code> to my router&rsquo;s global certificate store.</p>
+<p>But, I kept receiving log messages signalling that there is still something wrong. My lets encrypt certificate doesn&rsquo;t seem to be validated. :/</p>
+<p>Looking into <code>/etc/ssl/certs</code> it only contained one certificate.
+After installing the package <code>ca-certificates</code> in OpenWRT, The connection became
+active and and all my mqtt topics where (one-way) synchronized!</p>
+]]></content></item></channel></rss>
