@@ -1,13 +1,112 @@
-baseURL = 'https://subutux.github.io/'
+baseURL = 'https://blog.subutux.be/'
 languageCode = 'en-us'
 title = 'Subutux blog'
-theme = 'hyde'
+theme = 'hello-friend-ng'
+paginate     = 10
 
-[Menus]
-  main = [
-      {Name = "Github", URL = "https://github.com/subutux/"},
-      {Name = "LinkedIn", URL = "https://www.linkedin.com/in/stijn-van-campenhout-5a009733/"}
-  ]
+
+PygmentsCodeFences = true
+PygmentsStyle = "monokai"
+
+archetypeDir = "archetypes"
+contentDir   = "content"
+dataDir      = "data"
+layoutDir    = "layouts"
+publishDir   = "public"
+
+buildDrafts  = false
+buildFuture  = false
+buildExpired = false
+canonifyURLs = true
+
+enableRobotsTXT = true
+enableGitInfo   = false
+enableEmoji     = true
+enableMissingTranslationPlaceholders = false
+disableRSS     = false
+disableSitemap = false
+disable404     = false
+disableHugoGeneratorInject = false
+
+[author]
+  name = "Stijn Van Campenhout"
+
+[permalinks]
+  posts = "/posts/:year/:month/:title/"
 
 [params]
+  dateform        = "Jan 2, 2006"
+  dateformShort   = "Jan 2"
+  dateformNum     = "2006-01-02"
+  dateformNumTime = "2006-01-02 15:04"
+
+  # Subtitle for home
+  homeSubtitle = "Braindumps."
+
+  # Set disableReadOtherPosts to true in order to hide the links to other posts.
+  disableReadOtherPosts = false
+  
+  enableThemeToggle = true
+
+  # Enable sharing buttons, if you like
+  enableSharingButtons = true
+
+  # Metadata mostly used in document's head
   description = "Braindumps."
+  keywords = "linux, blog, devops, monitoring, home automation"
+  images = [""]
+
+  [params.footer]
+    trademark = true
+    rss = true
+    copyright = true
+    author = true
+
+    topText = []
+    bottomText = [
+      "Powered by <a href=\"http://gohugo.io\">Hugo</a>"
+    ]
+
+  [[params.social]]
+  name = "github"
+  url = "https://github.com/subutux/"
+  [[params.social]]
+  name = "linkedin"
+  url = "https://www.linkedin.com/in/stijn-van-campenhout-5a009733/"
+  [[params.social]]
+  name = "email"
+  url = "mailto:hey@subutux.be"
+  [[params.social]]
+  name = "rss"
+  url = "/index.xml"
+
+[taxonomies]
+    category = "blog"
+    tag      = "tags"
+    series   = "series"
+
+[languages]
+  [languages.en]
+    title = "Subutux"
+    subtitle = "A collection of braindumps."
+    keywords = ""
+    copyright = '<a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>'
+    readOtherPosts = "Read other posts"
+
+    [languages.en.params.logo]
+      logoText = "#"
+      logoHomeLink = "/"
+    # or
+    #
+    # path = "/img/your-example-logo.svg"
+    # alt = "Your example logo alt text"
+
+[menu]
+  [[menu.main]]
+    identifier = "about"
+    name       = "About"
+    url        = "about/"
+  [[menu.main]]
+    identifier = "posts"
+    name       = "Posts"
+    url        = "posts/"
