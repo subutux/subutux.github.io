@@ -17,8 +17,8 @@ data.</p>
 Setting this up with LetsEncrypt and DNS auth is quite easy.</p>
 <h3 id="certificates">Certificates</h3>
 <p>I Already have a dns challenge setup for other domains, so reusing this. Maybe I&rsquo;ll document this in the future.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">certbot certonly --preferred-challenges dns --authenticator dns-hetzner --dns-hetzner-credentials /etc/letsencrypt/hetzner.ini -d mqtt.server.domain
-</code></pre></div><h3 id="configuration">Configuration</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>certbot certonly --preferred-challenges dns --authenticator dns-hetzner --dns-hetzner-credentials /etc/letsencrypt/hetzner.ini -d mqtt.server.domain
+</span></span></code></pre></div><h3 id="configuration">Configuration</h3>
 <p>I like to keep my configurations quite clean. Luckly, Mosquitto supports splitting up the confgiration files by setting the configuration parameter <code>include_dir</code> and point it to a sensable path, like <code>/etc/mosquitto/conf.d/</code>.</p>
 <p>Then, I created 3 files in that directory:</p>
 <ul>
@@ -28,84 +28,84 @@ Setting this up with LetsEncrypt and DNS auth is quite easy.</p>
 </ul>
 <p>Where <code>0-security.conf</code> contains the configured security and authentication
 sections, disallowing anonymous access and specifing the password file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#75715e"># =================================================================</span>
-<span style="color:#75715e"># Security</span>
-<span style="color:#75715e"># =================================================================</span>
-
-<span style="color:#75715e"># If set, only clients that have a matching prefix on their</span>
-<span style="color:#75715e"># clientid will be allowed to connect to the broker. By default,</span>
-<span style="color:#75715e"># all clients may connect.</span>
-<span style="color:#75715e"># For example, setting &#34;secure-&#34; here would mean a client &#34;secure-</span>
-<span style="color:#75715e"># client&#34; could connect but another with clientid &#34;mqtt&#34; couldn&#39;t.</span>
-<span style="color:#75715e">#clientid_prefixes</span>
-
-<span style="color:#75715e"># Boolean value that determines whether clients that connect</span>
-<span style="color:#75715e"># without providing a username are allowed to connect. If set to</span>
-<span style="color:#75715e"># false then a password file should be created (see the</span>
-<span style="color:#75715e"># password_file option) to control authenticated client access.</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># Defaults to true if no other security options are set. If `password_file` or</span>
-<span style="color:#75715e"># `psk_file` is set, or if an authentication plugin is loaded which implements</span>
-<span style="color:#75715e"># username/password or TLS-PSK checks, then `allow_anonymous` defaults to</span>
-<span style="color:#75715e"># false.</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e">#allow_anonymous true</span>
-<span style="color:#a6e22e">allow_anonymous false</span>
-
-<span style="color:#75715e"># -----------------------------------------------------------------</span>
-<span style="color:#75715e"># Default authentication and topic access control</span>
-<span style="color:#75715e"># -----------------------------------------------------------------</span>
-
-<span style="color:#75715e"># Control access to the broker using a password file. This file can be</span>
-<span style="color:#75715e"># generated using the mosquitto_passwd utility. If TLS support is not compiled</span>
-<span style="color:#75715e"># into mosquitto (it is recommended that TLS support should be included) then</span>
-<span style="color:#75715e"># plain text passwords are used, in which case the file should be a text file</span>
-<span style="color:#75715e"># with lines in the format:</span>
-<span style="color:#75715e"># username:password</span>
-<span style="color:#75715e"># The password (and colon) may be omitted if desired, although this</span>
-<span style="color:#75715e"># offers very little in the way of security.</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># See the TLS client require_certificate and use_identity_as_username options</span>
-<span style="color:#75715e"># for alternative authentication options. If an auth_plugin is used as well as</span>
-<span style="color:#75715e"># password_file, the auth_plugin check will be made first.</span>
-<span style="color:#75715e">#password_file</span>
-<span style="color:#a6e22e">password_file /etc/mosquitto/passwd</span>
-</code></pre></div><p><code>10-listener-localhost.conf</code> contains a localhost listener, handy for debugging:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">listener 1883 localhost</span>
-</code></pre></div><p>and at last <code>20-listener-public-mqtt.server.domain-ssl.conf</code> containting the
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#75715e"># =================================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Security</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># =================================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If set, only clients that have a matching prefix on their</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># clientid will be allowed to connect to the broker. By default,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># all clients may connect.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># For example, setting &#34;secure-&#34; here would mean a client &#34;secure-</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># client&#34; could connect but another with clientid &#34;mqtt&#34; couldn&#39;t.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#clientid_prefixes</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Boolean value that determines whether clients that connect</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># without providing a username are allowed to connect. If set to</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># false then a password file should be created (see the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># password_file option) to control authenticated client access.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Defaults to true if no other security options are set. If `password_file` or</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># `psk_file` is set, or if an authentication plugin is loaded which implements</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># username/password or TLS-PSK checks, then `allow_anonymous` defaults to</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># false.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#allow_anonymous true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">allow_anonymous false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Default authentication and topic access control</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Control access to the broker using a password file. This file can be</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># generated using the mosquitto_passwd utility. If TLS support is not compiled</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># into mosquitto (it is recommended that TLS support should be included) then</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># plain text passwords are used, in which case the file should be a text file</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># with lines in the format:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># username:password</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># The password (and colon) may be omitted if desired, although this</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># offers very little in the way of security.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># See the TLS client require_certificate and use_identity_as_username options</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># for alternative authentication options. If an auth_plugin is used as well as</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># password_file, the auth_plugin check will be made first.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#password_file</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">password_file /etc/mosquitto/passwd</span>
+</span></span></code></pre></div><p><code>10-listener-localhost.conf</code> contains a localhost listener, handy for debugging:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#a6e22e">listener 1883 localhost</span>
+</span></span></code></pre></div><p>and at last <code>20-listener-public-mqtt.server.domain-ssl.conf</code> containting the
 public listener, with ssl configured:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">listener 1883</span>
-<span style="color:#a6e22e">protocol mqtt</span>
-<span style="color:#a6e22e">certfile /etc/letsencrypt/live/mqtt.server.domain/cert.pem</span>
-<span style="color:#a6e22e">cafile /etc/letsencrypt/live/mqtt.server.domain/chain.pem</span>
-<span style="color:#a6e22e">keyfile /etc/letsencrypt/live/mqtt.server.domain/privkey.pem</span>
-</code></pre></div><p>So far, so good.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#a6e22e">listener 1883</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">protocol mqtt</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">certfile /etc/letsencrypt/live/mqtt.server.domain/cert.pem</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cafile /etc/letsencrypt/live/mqtt.server.domain/chain.pem</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">keyfile /etc/letsencrypt/live/mqtt.server.domain/privkey.pem</span>
+</span></span></code></pre></div><p>So far, so good.</p>
 <p>Let&rsquo;s quickly configure the <code>renew_hook</code> for certbot to give mosquitto a kick when the cert is renewed:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">echo <span style="color:#e6db74">&#34;renew_hook = systemctl restart mosquitto&#34;</span> &gt;&gt; /etc/letsencrypt/renewal/mqtt.server.domain.conf
-</code></pre></div><h2 id="bridging">Bridging</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;renew_hook = systemctl restart mosquitto&#34;</span> &gt;&gt; /etc/letsencrypt/renewal/mqtt.server.domain.conf
+</span></span></code></pre></div><h2 id="bridging">Bridging</h2>
 <p>Now, we need to configure the local mosquitto on my router to bridge with the
 remote one.</p>
 <p>I&rsquo;m using the LuCi configuration page here to setup the bridge which generates
 the following configuration file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#75715e"># mosquitto.conf file generated from UCI config.</span>
-<span style="color:#a6e22e">log_dest syslog</span>
-<span style="color:#a6e22e">port 1883</span>
-
-<span style="color:#a6e22e">listener 1888</span>
-<span style="color:#a6e22e">protocol mqtt</span>
-
-
-<span style="color:#75715e"># Bridge connection from UCI section</span>
-<span style="color:#a6e22e">connection mqtt.subutux.be</span>
-<span style="color:#a6e22e">address mqtt.server.domain:1883</span>
-<span style="color:#a6e22e">notifications true</span>
-<span style="color:#a6e22e">remote_password long-password-here</span>
-<span style="color:#a6e22e">remote_username username</span>
-<span style="color:#a6e22e">start_type automatic</span>
-<span style="color:#a6e22e">topic # out 2</span>
-<span style="color:#a6e22e">try_private true</span>
-<span style="color:#a6e22e">bridge_capath /etc/ssl/certs # This one is important</span>
-</code></pre></div><p>First, I didn&rsquo;t know that <strong>mosquitto only initiates an ssl connection if you specify <code>bridge_cafile</code> or <code>bridge_capath</code></strong> <a href="https://mosquitto.org/man/mosquitto-conf-5.html">man page</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#75715e"># mosquitto.conf file generated from UCI config.</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log_dest syslog</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port 1883</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listener 1888</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">protocol mqtt</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Bridge connection from UCI section</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">connection mqtt.subutux.be</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">address mqtt.server.domain:1883</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">notifications true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">remote_password long-password-here</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">remote_username username</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">start_type automatic</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">topic # out 2</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">try_private true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bridge_capath /etc/ssl/certs # This one is important</span>
+</span></span></code></pre></div><p>First, I didn&rsquo;t know that <strong>mosquitto only initiates an ssl connection if you specify <code>bridge_cafile</code> or <code>bridge_capath</code></strong> <a href="https://mosquitto.org/man/mosquitto-conf-5.html">man page</a>.</p>
 <p>So i point <code>bridge_capath</code> to my router&rsquo;s global certificate store.</p>
 <p>But, I kept receiving log messages signalling that there is still something wrong. My lets encrypt certificate doesn&rsquo;t seem to be validated. 😕</p>
 <p>Looking into <code>/etc/ssl/certs</code> it only contained one certificate.
