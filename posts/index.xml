@@ -1,4 +1,70 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Subutux</title><link>https://blog.subutux.be/posts/</link><description>Recent content in Posts on Subutux</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>&lt;a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0&lt;/a></copyright><lastBuildDate>Sun, 16 Jan 2022 21:34:43 +0100</lastBuildDate><atom:link href="https://blog.subutux.be/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Mosquitto Bridge With Ssl</title><link>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</link><pubDate>Sun, 16 Jan 2022 21:34:43 +0100</pubDate><guid>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</guid><description>Recently one of my homeservers went haywire with a constant load of +- 80 in 1/5/15. Unrelated to this, buit it seems there is an issue with my local vaultwarden instance.
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Subutux</title><link>https://blog.subutux.be/posts/</link><description>Recent content in Posts on Subutux</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>&lt;a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0&lt;/a></copyright><lastBuildDate>Wed, 08 Jun 2022 22:06:32 +0200</lastBuildDate><atom:link href="https://blog.subutux.be/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Dell Xps 15 9510</title><link>https://blog.subutux.be/posts/2022/06/dell-xps-15-9510/</link><pubDate>Wed, 08 Jun 2022 22:06:32 +0200</pubDate><guid>https://blog.subutux.be/posts/2022/06/dell-xps-15-9510/</guid><description>Setup Connect iwctl device list station &amp;lt;device&amp;gt; scan station &amp;lt;device&amp;gt; get-networks station &amp;lt;device connect &amp;lt;SSID&amp;gt; ping google.com Date and Time timedatectl set-ntp true timedatectl status Set timezone
+ln -sf /usr/share/zoneinfo/Europe/Brussels /etc/localtime Sync the hardware clock
+date hwclock --systohc Disk Format the disk with gdisk, creating 2 partitions:
+p1: 1GB / EFI p2: Rest / Linux Crypt Formatting Create the EFI Fs
+mkfs.fat -F 32 -n EFI /dev/nvme0n1p1 Crypt cryptsetup luksFormat /dev/nvme0n1p2 cryptsetup open /dev/nvme0n1p2 arch lsblk Btrfs mkfs.</description><content type="html"><![CDATA[<h1 id="setup">Setup</h1>
+<h2 id="connect">Connect</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>iwctl
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>device list
+</span></span><span style="display:flex;"><span>station &lt;device&gt; scan
+</span></span><span style="display:flex;"><span>station &lt;device&gt; get-networks
+</span></span><span style="display:flex;"><span>station &lt;device connect &lt;SSID&gt;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ping google.com
+</span></span></code></pre></div><h2 id="date-and-time">Date and Time</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>timedatectl set-ntp true
+</span></span><span style="display:flex;"><span>timedatectl status
+</span></span></code></pre></div><p>Set timezone</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ln -sf /usr/share/zoneinfo/Europe/Brussels /etc/localtime
+</span></span></code></pre></div><p>Sync the hardware clock</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>date
+</span></span><span style="display:flex;"><span>hwclock --systohc
+</span></span></code></pre></div><h2 id="disk">Disk</h2>
+<p>Format the disk with gdisk, creating 2 partitions:</p>
+<ul>
+<li><strong>p1</strong>: 1GB / EFI</li>
+<li><strong>p2</strong>: Rest / Linux Crypt</li>
+</ul>
+<h3 id="formatting">Formatting</h3>
+<p>Create the EFI Fs</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mkfs.fat -F <span style="color:#ae81ff">32</span> -n EFI /dev/nvme0n1p1
+</span></span></code></pre></div><h4 id="crypt">Crypt</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cryptsetup luksFormat /dev/nvme0n1p2
+</span></span><span style="display:flex;"><span>cryptsetup open /dev/nvme0n1p2 arch
+</span></span><span style="display:flex;"><span>lsblk
+</span></span></code></pre></div><h4 id="btrfs">Btrfs</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mkfs.btrfs /dev/mapper/arch
+</span></span><span style="display:flex;"><span>mount /dev/mapper/arch /mnt
+</span></span><span style="display:flex;"><span>ls /mnt
+</span></span><span style="display:flex;"><span>btrfs  subvolume create /mnt/@
+</span></span><span style="display:flex;"><span>btrfs  subvolume create /mnt/@home
+</span></span><span style="display:flex;"><span>btrfs  subvolume create /mnt/@var
+</span></span><span style="display:flex;"><span>btrfs  subvolume create /mnt/@swap
+</span></span><span style="display:flex;"><span>btrfs  subvolume create /mnt/@pacman
+</span></span><span style="display:flex;"><span>btrfs  subvolume create /mnt/@vms
+</span></span><span style="display:flex;"><span>umount /mnt
+</span></span></code></pre></div><p>Mount the subvolumes to their respective places</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mount -o noatime,compress<span style="color:#f92672">=</span>zstd,ssd,discard<span style="color:#f92672">=</span>async,space_cache<span style="color:#f92672">=</span>v2,subvol<span style="color:#f92672">=</span>@ /dev/mapper/arch /mnt
+</span></span><span style="display:flex;"><span>mkdir /mnt/<span style="color:#f92672">{</span>boot,home,var,swap,var/cache/pacman/pkg,vms,swap<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>mkdir -p /mnt/<span style="color:#f92672">{</span>boot,home,var,swap,vms,swap<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>mount -o noatime,compress<span style="color:#f92672">=</span>zstd,ssd,discard<span style="color:#f92672">=</span>async,space_cache<span style="color:#f92672">=</span>v2,subvol<span style="color:#f92672">=</span>@home /dev/mapper/arch /mnt/home
+</span></span><span style="display:flex;"><span>mount -o noatime,compress<span style="color:#f92672">=</span>zstd,ssd,discard<span style="color:#f92672">=</span>async,space_cache<span style="color:#f92672">=</span>v2,subvol<span style="color:#f92672">=</span>@var /dev/mapper/arch /mnt/var
+</span></span><span style="display:flex;"><span>mkdir -p /mnt/var/cache/pacman/pkg
+</span></span><span style="display:flex;"><span>mount -o noatime,compress<span style="color:#f92672">=</span>zstd,ssd,discard<span style="color:#f92672">=</span>async,space_cache<span style="color:#f92672">=</span>v2,subvol<span style="color:#f92672">=</span>@pacman /dev/mapper/arch /mnt/var/cache/pacman/pkg
+</span></span><span style="display:flex;"><span>mount -o noatime,nodatacow,ssd,discard<span style="color:#f92672">=</span>async,space_cache<span style="color:#f92672">=</span>v2,subvol<span style="color:#f92672">=</span>@vms /dev/mapper/arch /mnt/vms
+</span></span><span style="display:flex;"><span>mount -o noatime,compress<span style="color:#f92672">=</span>zstd,ssd,discard<span style="color:#f92672">=</span>async,space_cache<span style="color:#f92672">=</span>v2,subvol<span style="color:#f92672">=</span>@swap /dev/mapper/arch /mnt/swap
+</span></span><span style="display:flex;"><span>mount /dev/nvme0n1p1 /mnt/boot
+</span></span></code></pre></div><h1 id="install-the-base-system">Install the base system</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>pacstrap /mnt base linux linux-firmware git vim btrfs-progs
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+</span></span></code></pre></div><blockquote>
+<p><strong>Tip</strong>: Now is a good time to backup your history file back onto the USB you&rsquo;ve booted with. This prevents you form manually re-entering all the mount commands again in case you do need to boot again from the install media. Just copy the <code>history.txt</code> file back to <code>/root/.zsh_history</code> and open a new tty with <!-- raw HTML omitted -->Alt+Left<!-- raw HTML omitted --></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span> mkdir /usb
+</span></span><span style="display:flex;"><span> mount /dev/sda1 /usb
+</span></span><span style="display:flex;"><span> cp .zsh_history /usb/history.txt
+</span></span></code></pre></div></blockquote>
+<h1 id="chroot">Chroot!</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>arch-chroot /mnt
+</span></span></code></pre></div>]]></content></item><item><title>Mosquitto Bridge With Ssl</title><link>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</link><pubDate>Sun, 16 Jan 2022 21:34:43 +0100</pubDate><guid>https://blog.subutux.be/posts/2022/01/mosquitto-bridge-with-ssl/</guid><description>Recently one of my homeservers went haywire with a constant load of +- 80 in 1/5/15. Unrelated to this, buit it seems there is an issue with my local vaultwarden instance.
 But this got me thinking. What if my local mqtt server goes down..
 I am running a local mosquitto server on my OpenWRT router (A Mikrotik 750Gr3) to support my growing love for home automation. Normally this should be quite stable, but I had issues with OpenWRT in the past.</description><content type="html"><![CDATA[<p>Recently one of my homeservers went haywire with a constant load of
 +- 80 in 1/5/15.
